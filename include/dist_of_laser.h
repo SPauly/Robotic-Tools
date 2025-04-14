@@ -19,10 +19,12 @@ namespace roboto
   protected:
    const double CalcLength(const double & dist) const;
 
-  private:
-    std::vector<double> distances_;
+   const double CalcMinDistance(const double& dist) const;
 
-    bool inv = false;
+  private:
+   std::vector<double> distances_;
+
+   bool inv = false;
   };
 
 } // namespace roboto

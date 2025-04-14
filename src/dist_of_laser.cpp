@@ -12,8 +12,7 @@ namespace roboto
   {
     int i = 2;
 
-    if(std::string(argv[1]) == "-i")
-    {
+    if (std::string(argv[2]) == "-i") {
       inv = true;
       ++i;
     }
@@ -57,9 +56,16 @@ namespace roboto
 
     for (const auto &dist : distances_)
     {
-      std::cout << dist << "\t\t\t | " << CalcLength(dist) << std::endl;
+      std::cout << dist << "\t\t\t | " << CalcLength(dist) * 100 << std::endl;
     }
-  } 
+    } else {
+      std::cout << "Distance Between lasers (cm) \t | Distance from laser (m)"
+                << std::endl;
+
+      for (const auto &dist : distances_) {
+        std::cout << dist << "\t\t\t | " << CalcMinDistance(dist) << std::endl;
+      }
+    }
   }
 
   const double DistOfLaser::CalcLength(const double & dist) const
@@ -70,6 +76,22 @@ namespace roboto
 
     double temp =
         (2.0 * (dist * dist)) - (2 * (dist * dist) * std::cos(internal::ANGLE_OF_LASER_RADIAN));
+
+    return std::sqrt(temp);
+  }
+
+  const double DistOfLaser::CalcMinDistance(const double &dist) const {
+    // we now know the distance between the two lasers after n meters
+
+    // convert input to m
+
+    double in = dist / 100.0;
+
+    // in = sqrt(2(x^2) - 2(x^2)cos(angle)) -> x = sqrt(in^2 / 2(1 -
+    // cos(angle)))
+
+    double temp =
+        (in * in) / (2 * (1 - std::cos(internal::ANGLE_OF_LASER_RADIAN)));
 
     return std::sqrt(temp);
   }
