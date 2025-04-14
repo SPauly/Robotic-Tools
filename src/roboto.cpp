@@ -4,6 +4,7 @@
 
 #include "dist_of_laser.h"
 #include "time_difference.h"
+#include "rad_conv.h"
 #include "subroutine_base.h"
 
 void RunTimeDifference(const double& arg1, const double& arg2);
@@ -11,7 +12,7 @@ void RunTimeDifference(const double& arg1, const double& arg2);
 int main(int argc, char* argv[]) {
   std::shared_ptr<roboto::SubroutineBase> sub = nullptr;
 
-  if(argc < 2){
+  if (argc < 2) {
     std::cout << "Usage: " << argv[0] << " <name of subroutine> <args...>"
               << std::endl;
     std::cout
@@ -71,28 +72,32 @@ int main(int argc, char* argv[]) {
 
     sub->Run();
     return 0;
-  
+
   } else if (std::string(argv[1]) == "radconv") {
-    if(argc != 4){
-      std::cout << "Usage: " << argv[0] << " radconv <value> <#|a|r>"
-              << std::endl;
+    if (argc != 4) {
+      std::cout << "Usage: " << argv[0] << " radconv <value> <num|pi|deg>"
+                << std::endl;
 
       return 1;
     }
 
-    /// TODO: Parse arguments and create subroutine
+    sub = std::make_shared<roboto::RadConv>(argv);
+
+    if (sub == nullptr) {
+      std::cerr << "Failed to create RadConv subroutine." << std::endl;
+      return 1;
+    }
+    sub->Run();
   }
 
   return 0;
 }
 
 void RunTimeDifference(const double& arg1, const double& arg2) {
-
-  std::cout << "Time for Distance 1: "
-            << roboto::DistanceToTime(arg1) << " ms" << std::endl;
-  std::cout << "Time for Distance 2: "
-            << roboto::DistanceToTime(arg2) << " ms" << std::endl;
-
+  std::cout << "Time for Distance 1: " << roboto::DistanceToTime(arg1) << " ms"
+            << std::endl;
+  std::cout << "Time for Distance 2: " << roboto::DistanceToTime(arg2) << " ms"
+            << std::endl;
 
   std::cout << "Difference in Time: "
             << roboto::DistanceToTime(std::abs(arg1 - arg2)) << " in ms"

@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(Robotic-Tools
   src/roboto.cpp
   src/dist_of_laser.cpp
+  src/rad_conv.cpp
 )
 
 target_include_directories(Robotic-Tools PUBLIC
