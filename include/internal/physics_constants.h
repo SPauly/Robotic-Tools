@@ -5,9 +5,9 @@ namespace roboto
 {
   namespace internal
   {
-    #define LIGHTSPEED_IN_AIR 300000.0
-  } // namespace internal
-  
+  static const double LIGHTSPEED_IN_AIR = 299792458 / 1.0003;
+  }  // namespace internal
+
 } // namespace roboto
 
 

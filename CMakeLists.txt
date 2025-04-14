@@ -9,10 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # add the executable
 add_executable(Robotic-Tools
-  
+  src/roboto.cpp
+  src/dist_of_laser.cpp
 )
 
 target_include_directories(Robotic-Tools PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include/
-  ${CMAKE_CURRENT_SOURCE_DIR}/third_party/asio/asio/include/
   )
