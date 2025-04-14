@@ -20,7 +20,8 @@ int main(int argc, char* argv[]) {
            "<Distance 2 in Meters> - calculates difference in time of "
            "both laser distances\n \t distoflaser <arg1> <arg2> ... <argn> - "
            "The distance between two lasers at distances arg1...n\n \t radconv "
-           "<value> <#|a|r> converts given value to lazernumber, angle and rad"
+           "<value> <num|pi|deg> converts given value to lazernumber, angle "
+           "and rad"
         << std::endl;
     return 1;
   }
@@ -94,12 +95,12 @@ int main(int argc, char* argv[]) {
 }
 
 void RunTimeDifference(const double& arg1, const double& arg2) {
-  std::cout << "Time for Distance 1: " << roboto::DistanceToTime(arg1) << " ms"
-            << std::endl;
-  std::cout << "Time for Distance 2: " << roboto::DistanceToTime(arg2) << " ms"
-            << std::endl;
+  std::cout << "Time for Distance 1: " << roboto::DistanceToTime(arg1) * 1e9
+            << " ns" << std::endl;
+  std::cout << "Time for Distance 2: " << roboto::DistanceToTime(arg2) * 1e9
+            << " ns" << std::endl;
 
   std::cout << "Difference in Time: "
-            << roboto::DistanceToTime(std::abs(arg1 - arg2)) << " in ms"
+            << roboto::DistanceToTime(std::abs(arg1 - arg2)) * 1e9 << " in ns"
             << std::endl;
 }
