@@ -61,6 +61,10 @@ int main(int argc, char* argv[]) {
       return 1;
     }
     sub->Run();
+  } else {
+    std::cerr << "Unknown subroutine: " << argv[1] << std::endl;
+    ShowHelp(argv);
+    return 1;
   }
 
   return 0;

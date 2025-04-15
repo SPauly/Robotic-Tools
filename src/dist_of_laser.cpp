@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 #include "internal/config.h"
@@ -45,35 +46,39 @@ void DistOfLaser::Run() {
               << std::endl;
 
     for (const auto &dist : distances_) {
-      std::cout << dist << "\t\t\t | " << CalcLength(dist) * 100 << std::endl;
+      std::cout << std::fixed << std::setprecision(2);
+      std::cout << dist << "\t\t\t | " << CalcDistBetweenLasersCM(dist)
+                << std::endl;
     }
   } else {
     std::cout << "Distance Between lasers (cm) \t | Distance from laser (m)"
               << std::endl;
 
     for (const auto &dist : distances_) {
-      std::cout << dist << "\t\t\t | " << CalcMinDistance(dist) << std::endl;
+      std::cout << std::fixed << std::setprecision(2);
+      std::cout << dist << "\t\t\t\t | " << CalcDistToLaserM(dist) << std::endl;
     }
   }
 }
 
-const double DistOfLaser::CalcLength(const double &dist) const {
+const double DistOfLaser::CalcDistBetweenLasersCM(const double &dist_m) const {
   // Use cosine law to calculate the distance between two lasers
 
   // dist = sqrt(a^2 + b^2 - 2*a*b*cos(angle))
 
-  double temp = (2.0 * (dist * dist)) -
-                (2 * (dist * dist) * std::cos(internal::ANGLE_OF_LASER_RADIAN));
+  double temp =
+      (2.0 * (dist_m * dist_m)) -
+      (2 * (dist_m * dist_m) * std::cos(internal::ANGLE_OF_LASER_RADIAN));
 
-  return std::sqrt(temp);
+  return std::sqrt(temp) * 100.0;  // convert to cm
 }
 
-const double DistOfLaser::CalcMinDistance(const double &dist) const {
+const double DistOfLaser::CalcDistToLaserM(const double &dist_cm) const {
   // we now know the distance between the two lasers after n meters
 
   // convert input to m
 
-  double in = dist / 100.0;
+  double in = dist_cm / 100.0;
 
   // in = sqrt(2(x^2) - 2(x^2)cos(angle)) -> x = sqrt(in^2 / 2(1 -
   // cos(angle)))

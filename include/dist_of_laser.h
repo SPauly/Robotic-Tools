@@ -15,9 +15,9 @@ class DistOfLaser : public SubroutineBase {
   virtual void Run() override;
 
  protected:
-  const double CalcLength(const double& dist) const;
+  const double CalcDistBetweenLasersCM(const double& dist_in_meters) const;
 
-  const double CalcMinDistance(const double& dist) const;
+  const double CalcDistToLaserM(const double& dist_in_cm) const;
 
  private:
   std::vector<double> distances_;

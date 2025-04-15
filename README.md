@@ -28,45 +28,45 @@ Collection of tools needed for a robotic related project at university
 
 **Distance between two lasers dependent on distance to source**:
 
-```roboto distoflasers <arg1> <arg2> ...```
+```roboto distoflaser <arg1> <arg2> ...```
 
 - Calculates the relative distance between two lasers depending on the distance to the source based on the angle between them (here 0.5°)
 - example:
 
   - ```bash
-    roboto distoflasers 3.5 5 7.5
+    roboto distoflaser 3.5 5 7.5
     ```
 
 - output:
 
   - ```bash
     Distance of laser (m)    | Distance Between lasers (cm)
-    3.5                      | 3.05432
-    5                        | 4.36331
-    7.5                      | 6.54496
+    3.50                     | 3.05
+    5.00                     | 4.36
+    7.50                     | 6.54
     ```
 
 Inverse option:
 
-```roboto distoflasers -i <arg1> <arg2> ...```
+```roboto distoflaser -i <arg1> <arg2> ...```
 
 - Calculates how far after the source the distance between the lasers is arg1...n 
 
 - example:
 
   - ```bash
-    roboto distoflasers -i 6 7.5
+    roboto distoflaser -i 6 7.5
     ```
 
   - output:
 
   - ```bash
     Distance Between lasers (cm)     | Distance from laser (m)
-    6                        | 6.87552
-    7.5                      | 8.59439
+    6.00                             | 6.88
+    7.50                             | 8.59
     ```
 
------
+------
 
 **Conversion Between Laser number, Degrees and Radians**:
 
