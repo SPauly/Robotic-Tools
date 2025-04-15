@@ -20,83 +20,86 @@ RadConv::RadConv(char** argv) : SubroutineBase() {
   }
 }
 
-void RadConv::Run() {
+void RadConv::Run() { RunImpl(); }
+
+void RadConv::RunImpl() {
   std::cout << std::fixed << std::setprecision(3);
   std::cout << "Lazer Number \t | Degree \t | Radian" << std::endl;
   std::cout << "----------------------------------------" << std::endl;
 
   switch (type_) {
     case input_type::NUM:
-      FromNum();
+      laser_pos_ = FromNum();
       break;
 
     case input_type::RAD:
-      FromRad();
+      laser_pos_ = FromRad();
       break;
     case input_type::DEG:
-      FromDeg();
+      laser_pos_ = FromDeg();
       break;
     default:
       break;
   }
-}
 
-void RadConv::FromNum() {
-  if (value_ < 0 || value_ > internal::NUM_LAZERS) {
-    std::cerr << "Error: The provided value is out of range." << std::endl;
-    return;
-  }
-
-  // num -> deg: -135 + num * 0.5
-  double deg = internal::LaserNumToDeg(value_);
-  // num -> rad: deg * (M_PI / (360.0 / 2))
-  double rad = internal::LaserNumToRad(value_);
-
-  std::cout << std::setprecision(3);
-  std::cout << static_cast<int>(value_) << "\t\t | ";
-  std::cout << deg << "\t | ";
-  std::cout << rad << "\t" << std::endl;
+  std::cout << laser_pos_.num << "\t\t | ";
+  std::cout << laser_pos_.deg << "\t | ";
+  std::cout << laser_pos_.rad << "\t" << std::endl;
   std::cout << "----------------------------------------" << std::endl;
 }
 
-void RadConv::FromRad() {
-  // rad -> deg: rad * (360.0 / 2) / M_PI
-  double deg = internal::RadToDeg(value_);
-
-  if (deg < internal::ZERO_LAZER_DEG || deg > internal::MAX_LAZER_DEG) {
+LaserPosType RadConv::FromNum() {
+  if (value_ < 0 || value_ > internal::NUM_LAZERS) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
-    return;
+    return LaserPosType{};
+  }
+
+  LaserPosType laser_pos;
+  laser_pos.num = static_cast<int>(value_);
+
+  // num -> deg: -135 + num * 0.5
+  laser_pos.deg = internal::LaserNumToDeg(value_);
+  // num -> rad: deg * (M_PI / (360.0 / 2))
+  laser_pos.rad = internal::DegToRad(laser_pos.deg);
+
+  return laser_pos;
+}
+
+LaserPosType RadConv::FromRad() {
+  LaserPosType laser_pos;
+  // rad -> deg: rad * (360.0 / 2) / M_PI
+  laser_pos.deg = internal::RadToDeg(value_);
+
+  if (laser_pos.deg < internal::ZERO_LAZER_DEG ||
+      laser_pos.deg > internal::MAX_LAZER_DEG) {
+    std::cerr << "Error: The provided value is out of range." << std::endl;
+    return LaserPosType{};
   }
 
   // rad -> num: (deg - internal::ZERO_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
-  int num = internal::DegToLaserNum(deg);
+  laser_pos.num = internal::DegToLaserNum(laser_pos.deg);
+  laser_pos.rad = value_;
 
-  std::cout << std::setprecision(3);
-  std::cout << num << "\t\t | ";
-  std::cout << deg << "\t | ";
-  std::cout << value_ << "\t" << std::endl;
-  std::cout << "----------------------------------------" << std::endl;
+  return laser_pos;
 }
 
-void RadConv::FromDeg() {
+LaserPosType RadConv::FromDeg() {
   if (value_ < internal::ZERO_LAZER_DEG || value_ > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
-    return;
+    return LaserPosType{};
   }
 
+  LaserPosType laser_pos;
+
   // deg -> rad: deg * (M_PI / (360.0 / 2))
-  double rad = internal::DegToRad(value_);
+  laser_pos.rad = internal::DegToRad(value_);
 
   // deg -> num: (deg - internal::ZERO_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
-  int num = internal::DegToLaserNum(value_);
-
-  std::cout << std::setprecision(3);
-  std::cout << num << "\t\t | ";
-  std::cout << value_ << "\t | ";
-  std::cout << rad << "\t" << std::endl;
-  std::cout << "----------------------------------------" << std::endl;
+  laser_pos.num = internal::DegToLaserNum(value_);
+  laser_pos.deg = value_;
+  return laser_pos;
 }
 
 }  // namespace roboto
