@@ -4,7 +4,7 @@
 
 #include "dist_of_laser.h"
 #include "time_difference.h"
-#include "rad_conv.h"
+#include "laser_pos.h"
 #include "subroutine_base.h"
 
 void ShowHelp(char** argv);
@@ -46,18 +46,18 @@ int main(int argc, char* argv[]) {
     sub->Run();
     return 0;
 
-  } else if (std::string(argv[1]) == "radconv") {
+  } else if (std::string(argv[1]) == "laserpos") {
     if (argc != 4) {
-      std::cout << "Usage: " << argv[0] << " radconv <value> <num|pi|deg>"
+      std::cout << "Usage: " << argv[0] << " laserpos <value> <num|pi|deg>"
                 << std::endl;
 
       return 1;
     }
 
-    sub = std::make_shared<roboto::RadConv>(argv);
+    sub = std::make_shared<roboto::LaserPos>(argv);
 
     if (sub == nullptr) {
-      std::cerr << "Failed to create RadConv subroutine." << std::endl;
+      std::cerr << "Failed to create LaserPos subroutine." << std::endl;
       return 1;
     }
     sub->Run();
@@ -101,7 +101,7 @@ void ShowHelp(char** argv) {
          "<Distance 2 in Meters> - calculates difference in time of "
          "both laser distances\n \t > distoflaser <arg1> <arg2> ... <argn> - "
          "The distance between two lasers at distances arg1...n\n \t > "
-         "radconv <value> <num|pi|deg> converts given value to lazernumber, "
+         "laserpos <value> <num|pi|deg> converts given value to lazernumber, "
          "angle and rad"
       << std::endl;
 }

@@ -1,5 +1,5 @@
-#ifndef RAD_CONV_H
-#define RAD_CONV_H
+#ifndef LASER_POS_H
+#define LASER_POS_H
 
 #include <string>
 
@@ -14,10 +14,10 @@ struct LaserPosType {
   double rad;
 };
 
-class RadConv : public SubroutineBase {
+class LaserPos : public SubroutineBase {
  public:
-  RadConv(char **argv);
-  ~RadConv() override = default;
+  LaserPos(char **argv);
+  ~LaserPos() override = default;
 
   virtual void Run() override;
 
@@ -37,4 +37,4 @@ class RadConv : public SubroutineBase {
 };
 }  // namespace roboto
 
-#endif  // RAD_CONV_H
+#endif  // LASER_POS_H

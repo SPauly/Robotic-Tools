@@ -1,4 +1,4 @@
-#include "rad_conv.h"
+#include "laser_pos.h"
 
 #include <iostream>
 #include <iomanip>
@@ -6,7 +6,7 @@
 #include "internal/conversions.h"
 
 namespace roboto {
-RadConv::RadConv(char** argv) : SubroutineBase() {
+LaserPos::LaserPos(char** argv) : SubroutineBase() {
   try {
     value_ = std::stod(argv[2]);
   } catch (const std::exception& e) {
@@ -20,9 +20,9 @@ RadConv::RadConv(char** argv) : SubroutineBase() {
   }
 }
 
-void RadConv::Run() { RunImpl(); }
+void LaserPos::Run() { RunImpl(); }
 
-void RadConv::RunImpl() {
+void LaserPos::RunImpl() {
   std::cout << std::fixed << std::setprecision(3);
   std::cout << "Lazer Number \t | Degree \t | Radian" << std::endl;
   std::cout << "----------------------------------------" << std::endl;
@@ -48,7 +48,7 @@ void RadConv::RunImpl() {
   std::cout << "----------------------------------------" << std::endl;
 }
 
-LaserPosType RadConv::FromNum() {
+LaserPosType LaserPos::FromNum() {
   if (value_ < 0 || value_ > internal::NUM_LAZERS) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
     return LaserPosType{};
@@ -65,7 +65,7 @@ LaserPosType RadConv::FromNum() {
   return laser_pos;
 }
 
-LaserPosType RadConv::FromRad() {
+LaserPosType LaserPos::FromRad() {
   LaserPosType laser_pos;
   // rad -> deg: rad * (360.0 / 2) / M_PI
   laser_pos.deg = internal::RadToDeg(value_);
@@ -84,7 +84,7 @@ LaserPosType RadConv::FromRad() {
   return laser_pos;
 }
 
-LaserPosType RadConv::FromDeg() {
+LaserPosType LaserPos::FromDeg() {
   if (value_ < internal::ZERO_LAZER_DEG || value_ > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
     return LaserPosType{};
