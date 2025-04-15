@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include "internal/conversions.h"
+
 namespace roboto {
 RadConv::RadConv(char** argv) : SubroutineBase() {
   try {
@@ -40,11 +42,15 @@ void RadConv::Run() {
 }
 
 void RadConv::FromNum() {
+  if (value_ < 0 || value_ > internal::NUM_LAZERS) {
+    std::cerr << "Error: The provided value is out of range." << std::endl;
+    return;
+  }
+
   // num -> deg: -135 + num * 0.5
-  double deg =
-      internal::ZERO_LAZER_DEG + value_ * internal::ANGLE_OF_LASER_DEGREE;
+  double deg = internal::LaserNumToDeg(value_);
   // num -> rad: deg * (M_PI / (360.0 / 2))
-  double rad = deg * M_PI / (360.0 / 2);
+  double rad = internal::LaserNumToRad(value_);
 
   std::cout << std::setprecision(3);
   std::cout << static_cast<int>(value_) << "\t\t | ";
@@ -55,7 +61,7 @@ void RadConv::FromNum() {
 
 void RadConv::FromRad() {
   // rad -> deg: rad * (360.0 / 2) / M_PI
-  double deg = value_ * (360.0 / 2) / M_PI;
+  double deg = internal::RadToDeg(value_);
 
   if (deg < internal::ZERO_LAZER_DEG || deg > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
@@ -64,8 +70,8 @@ void RadConv::FromRad() {
 
   // rad -> num: (deg - internal::ZERO_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
-  int num = static_cast<int>((deg - internal::ZERO_LAZER_DEG) /
-                             internal::ANGLE_OF_LASER_DEGREE);
+  int num = internal::DegToLaserNum(deg);
+
   std::cout << std::setprecision(3);
   std::cout << num << "\t\t | ";
   std::cout << deg << "\t | ";
@@ -80,12 +86,11 @@ void RadConv::FromDeg() {
   }
 
   // deg -> rad: deg * (M_PI / (360.0 / 2))
-  double rad = value_ * M_PI / (360.0 / 2);
+  double rad = internal::DegToRad(value_);
 
   // deg -> num: (deg - internal::ZERO_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
-  int num = static_cast<int>((value_ - internal::ZERO_LAZER_DEG) /
-                             internal::ANGLE_OF_LASER_DEGREE);
+  int num = internal::DegToLaserNum(value_);
 
   std::cout << std::setprecision(3);
   std::cout << num << "\t\t | ";

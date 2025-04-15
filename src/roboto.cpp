@@ -8,7 +8,7 @@
 #include "subroutine_base.h"
 
 void ShowHelp(char** argv);
-void RunTimeDifference(const double& arg1, const double& arg2);
+void RunTimeDifference(char** argv);
 
 int main(int argc, char* argv[]) {
   std::shared_ptr<roboto::SubroutineBase> sub = nullptr;
@@ -26,25 +26,7 @@ int main(int argc, char* argv[]) {
       return 1;
     }
 
-    /// TODO: Test that they are correct values and convert them properly
-    double arg1, arg2;
-
-    try {
-      arg1 = std::stod(argv[2]);
-      arg2 = std::stod(argv[3]);
-    } catch (const std::invalid_argument& e) {
-      std::cerr << "Invalid argument: Please provide valid numeric values for "
-                   "distances."
-                << std::endl;
-      return 1;
-    } catch (const std::out_of_range& e) {
-      std::cerr
-          << "Out of range: The provided values are too large or too small."
-          << std::endl;
-      return 1;
-    }
-
-    RunTimeDifference(arg1, arg2);
+    RunTimeDifference(argv);
 
     return 0;
   } else if (std::string(argv[1]) == "distoflaser") {
@@ -84,7 +66,23 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-void RunTimeDifference(const double& arg1, const double& arg2) {
+void RunTimeDifference(char** argv) {
+  double arg1, arg2;
+
+  try {
+    arg1 = std::stod(argv[2]);
+    arg2 = std::stod(argv[3]);
+  } catch (const std::invalid_argument& e) {
+    std::cerr << "Invalid argument: Please provide valid numeric values for "
+                 "distances."
+              << std::endl;
+    return;
+  } catch (const std::out_of_range& e) {
+    std::cerr << "Out of range: The provided values are too large or too small."
+              << std::endl;
+    return;
+  }
+
   std::cout << "Time for Distance 1: " << roboto::DistanceToTime(arg1) * 1e9
             << " ns" << std::endl;
   std::cout << "Time for Distance 2: " << roboto::DistanceToTime(arg2) * 1e9
