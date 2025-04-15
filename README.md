@@ -61,7 +61,7 @@ Inverse option:
   - output:
 
   - ```bash
-    Distance of laser (m)    | Distance Between lasers (cm)
+    Distance Between lasers (cm)     | Distance from laser (m)
     6                        | 6.87552
     7.5                      | 8.59439
     ```

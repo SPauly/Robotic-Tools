@@ -7,26 +7,16 @@
 #include "rad_conv.h"
 #include "subroutine_base.h"
 
+void ShowHelp(char** argv);
 void RunTimeDifference(const double& arg1, const double& arg2);
 
 int main(int argc, char* argv[]) {
   std::shared_ptr<roboto::SubroutineBase> sub = nullptr;
 
   if (argc < 2) {
-    std::cout << "Usage: " << argv[0] << " <name of subroutine> <args...>"
-              << std::endl;
-    std::cout
-        << "Available Subroutines:\n \t timedif <Distance 1 in Meters> "
-           "<Distance 2 in Meters> - calculates difference in time of "
-           "both laser distances\n \t distoflaser <arg1> <arg2> ... <argn> - "
-           "The distance between two lasers at distances arg1...n\n \t radconv "
-           "<value> <num|pi|deg> converts given value to lazernumber, angle "
-           "and rad"
-        << std::endl;
+    ShowHelp(argv);
     return 1;
   }
-
-  // Factory-Method for calling correct subroutine
 
   if (std::string(argv[1]) == "timedif") {
     if (argc != 4) {
@@ -103,4 +93,17 @@ void RunTimeDifference(const double& arg1, const double& arg2) {
   std::cout << "Difference in Time: "
             << roboto::DistanceToTime(std::abs(arg1 - arg2)) * 1e9 << " in ns"
             << std::endl;
+}
+
+void ShowHelp(char** argv) {
+  std::cout << "Usage: " << argv[0] << " <name of subroutine> <args...>"
+            << std::endl;
+  std::cout
+      << "Available Subroutines:\n\t > timedif <Distance 1 in Meters> "
+         "<Distance 2 in Meters> - calculates difference in time of "
+         "both laser distances\n \t > distoflaser <arg1> <arg2> ... <argn> - "
+         "The distance between two lasers at distances arg1...n\n \t > "
+         "radconv <value> <num|pi|deg> converts given value to lazernumber, "
+         "angle and rad"
+      << std::endl;
 }
