@@ -61,7 +61,7 @@ Inverse option:
   - output:
 
   - ```bash
-    Distance of laser (m)    | Distance Between lasers (cm)
+    Distance Between lasers (cm)     | Distance from laser (m)
     6                        | 6.87552
     7.5                      | 8.59439
     ```
@@ -70,20 +70,20 @@ Inverse option:
 
 **Conversion Between Laser number, Degrees and Radians**:
 
-```roboto radconv <value> <num|pi|deg>```
+```roboto laserpos <value> <num|pi|deg>```
 
 - Converts between laser number, degrees and radians
 - example:
 
 ```bash
 
-radconv -89.3 deg
+laserpos -89.3 deg
 Lazer Number     | Degree        | Radian
 ----------------------------------------
 91               | -89.300       | -1.559
 ----------------------------------------
 
-radconv 91 num
+laserpos 91 num
 
 Lazer Number     | Degree        | Radian
 ----------------------------------------

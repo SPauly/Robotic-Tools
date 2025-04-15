@@ -7,14 +7,14 @@ namespace roboto {
 namespace internal {
 
 // Lidar setup
-static const double ANGLE_OF_LASER_DEGREE = 0.5;  // in degrees
-static const double ANGLE_OF_LASER_RADIAN =
+inline constexpr double ANGLE_OF_LASER_DEGREE = 0.5;  // in degrees
+inline constexpr double ANGLE_OF_LASER_RADIAN =
     ANGLE_OF_LASER_DEGREE * M_PI / (360.0 / 2);  // in radians
 
-static const double ZERO_LAZER_DEG = -135.0;  // in degrees
-static const double MAX_LAZER_DEG = 135.0;    // in degrees
-static const double LAZER_RANGE_DEG = 270.0;  // in degrees
-static const double NUM_LAZERS = 540.0;       // number of lasers
+inline constexpr double ZERO_LAZER_DEG = -135.0;  // in degrees
+inline constexpr double MAX_LAZER_DEG = 135.0;    // in degrees
+inline constexpr double LAZER_RANGE_DEG = 270.0;  // in degrees
+inline constexpr double NUM_LAZERS = 540.0;       // number of lasers
 
 }  // namespace internal
 
