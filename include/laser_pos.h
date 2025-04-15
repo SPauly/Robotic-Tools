@@ -17,7 +17,7 @@ struct LaserPosType {
 class LaserPos : public SubroutineBase {
  public:
   LaserPos(char **argv);
-  ~LaserPos() override = default;
+  virtual ~LaserPos() override = default;
 
   virtual void Run() override;
 

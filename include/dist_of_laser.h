@@ -5,29 +5,26 @@
 
 #include "subroutine_base.h"
 
-namespace roboto
-{
-  
-  class DistOfLaser : public SubroutineBase
-  {
-  public:
-   DistOfLaser(int argc, char** argv);
-   ~DistOfLaser() override = default;
+namespace roboto {
 
-   virtual void Run() override;
+class DistOfLaser : public SubroutineBase {
+ public:
+  DistOfLaser(int argc, char** argv);
+  virtual ~DistOfLaser() override = default;
 
-  protected:
-   const double CalcLength(const double & dist) const;
+  virtual void Run() override;
 
-   const double CalcMinDistance(const double& dist) const;
+ protected:
+  const double CalcLength(const double& dist) const;
 
-  private:
-   std::vector<double> distances_;
+  const double CalcMinDistance(const double& dist) const;
 
-   bool inv = false;
-  };
+ private:
+  std::vector<double> distances_;
 
-} // namespace roboto
+  bool inv = false;
+};
 
+}  // namespace roboto
 
-#endif //DIST_OF_LASER_H
+#endif  // DIST_OF_LASER_H
