@@ -1,6 +1,8 @@
 # Robotic-Tools
 
-Collection of tools needed for a robotic related project at university
+Robotic-Tools is a collection of tools, examples and small projects developed and needed during a robotics project group at the Rheinische-Friedrich-Wilhelms-Universität Bonn (specifically this [course](https://www.ais.uni-bonn.de/SS/PG_Mobile_Robotik.html) by Dr. Nils Goerke).
+
+Disclaimer: This is not an official repository of the university, but merely a collection of things I deemed useful during the course. The tools are not guaranteed to be correct or complete, but I will try to keep them up to date and fix bugs if they occur.
 
 ## Tools
 
