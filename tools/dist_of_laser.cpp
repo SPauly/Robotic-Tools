@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <string>
 
-#include "internal/config.h"
+#include "roboto/internal/config.h"
 
 namespace roboto {
 DistOfLaser::DistOfLaser(int argc, char **argv) : SubroutineBase() {

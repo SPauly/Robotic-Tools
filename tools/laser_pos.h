@@ -4,15 +4,10 @@
 #include <string>
 
 #include "subroutine_base.h"
-#include "internal/config.h"
+#include "roboto/lidar_helpers.h"
+#include "roboto/internal/config.h"
 
 namespace roboto {
-
-struct LaserPosType {
-  int num;
-  double deg;
-  double rad;
-};
 
 class LaserPos : public SubroutineBase {
  public:

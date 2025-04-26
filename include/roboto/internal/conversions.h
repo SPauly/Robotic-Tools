@@ -1,7 +1,7 @@
 #ifndef INTERNAL_CONVERSIONS_H
 #define INTERNAL_CONVERSIONS_H
 
-#include "internal/config.h"
+#include "roboto/internal/config.h"
 
 namespace roboto {
 namespace internal {
@@ -10,7 +10,7 @@ namespace internal {
 /// config.h. Faster than LaserNumToRad.
 /// @param num laser number ranging from 0 to NUM_LAZERS
 /// @return degree value (does not check for out of range)
-inline const double LaserNumToDeg(const double &num) {
+inline constexpr double LaserNumToDeg(const double &num) {
   // num -> deg: -135 + num * 0.5
   return MIN_LAZER_DEG + num * ANGLE_OF_LASER_DEGREE;
 }

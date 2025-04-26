@@ -3,9 +3,11 @@
 #include <string>
 
 #include "dist_of_laser.h"
-#include "time_difference.h"
 #include "laser_pos.h"
 #include "subroutine_base.h"
+#include "roboto/lidar_helpers.h"
+
+#include "roboto/lidar_helpers.h"
 
 void ShowHelp(char** argv);
 void RunTimeDifference(char** argv);

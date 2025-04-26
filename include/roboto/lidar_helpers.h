@@ -16,12 +16,18 @@ template <typename Derived>
 class AngleBase;
 }
 
+class RadianType;
+class DegreeType;
+class LaserNumType;
+class LaserPosType;
+
 // -- Laser Distance --
 
 /// @brief Returns the time it takes for a laser to travel a distance in meters.
 /// @param distance distance in meters
 /// @return Time in seconds
-inline const double DistanceToTime(const double& distance) {
+[[nodiscard]] inline constexpr double DistanceToTime(
+    const double& distance) noexcept {
   return distance / internal::LIGHTSPEED_IN_AIR;
 }
 
@@ -35,9 +41,9 @@ inline const double DistanceToTime(const double& distance) {
 /// @param laser_deg Degree offset between the lasers standard is set in
 /// config.h
 /// @return Distance between the two lasers in meters
-const double DistBetweenLasersM(
-    const double& dist_of_lasers_m,
-    const double laser_deg = roboto::internal::ANGLE_OF_LASER_DEGREE) {
+[[nodiscard]] inline constexpr double DistBetweenLasersM(
+    const double dist_of_lasers_m,
+    const double laser_deg = roboto::internal::ANGLE_OF_LASER_DEGREE) noexcept {
   // Use cosine law to calculate the distance between two lasers
   // dist = sqrt(a^2 + b^2 - 2*a*b*cos(angle)) where we have a = b
 
@@ -54,9 +60,9 @@ const double DistBetweenLasersM(
 /// config.h
 /// @return Distance the lasers travel before we measure the distance between
 /// them as dist_bet_lasers_m in meters
-const double DistToLaserSeparationM(
+[[nodiscard]] inline const double DistToLaserSeparationM(
     const double dist_bet_lasers_m,
-    const double laser_deg = roboto::internal::ANGLE_OF_LASER_DEGREE) {
+    const double laser_deg = roboto::internal::ANGLE_OF_LASER_DEGREE) noexcept {
   // dist = sqrt(2(x^2) - 2(x^2)cos(angle)) -> x = sqrt(in^2 / 2(1 -
   // cos(angle)))
 
@@ -67,63 +73,6 @@ const double DistToLaserSeparationM(
 }
 
 // -- Conversion between laser number, degree and radian --
-
-class RadianType : public internal::AngleBase<RadianType> {
- public:
-  using internal::AngleBase<RadianType>::AngleBase;
-  using internal::AngleBase<RadianType>::operator=;
-
-  // Templated conversion function
-  template <typename OtherDerived>
-  static constexpr double convertFromOther(double value) noexcept {
-    if constexpr (std::is_same_v<OtherDerived, DegreeType>) {
-      return internal::DegToRad(value);
-    } else if constexpr (std::is_same_v<OtherDerived, LaserNumType>) {
-      return internal::LaserNumToRad(value);
-    } else {
-      static_assert(sizeof(OtherDerived) == 0,
-                    "Unsupported conversion to RadianType.");
-    }
-  }
-};
-
-class DegreeType : public internal::AngleBase<DegreeType> {
- public:
-  using internal::AngleBase<DegreeType>::AngleBase;
-  using internal::AngleBase<DegreeType>::operator=;
-
-  // Templated conversion function
-  template <typename OtherDerived>
-  static constexpr double convertFromOther(double value) noexcept {
-    if constexpr (std::is_same_v<OtherDerived, RadianType>) {
-      return internal::RadToDeg(value);
-    } else if constexpr (std::is_same_v<OtherDerived, LaserNumType>) {
-      return internal::LaserNumToDeg(value);
-    } else {
-      static_assert(sizeof(OtherDerived) == 0,
-                    "Unsupported conversion to DegreeType.");
-    }
-  }
-};
-
-class LaserNumType : public internal::AngleBase<LaserNumType> {
- public:
-  using internal::AngleBase<LaserNumType>::AngleBase;
-  using internal::AngleBase<LaserNumType>::operator=;
-
-  // Templated conversion function
-  template <typename OtherDerived>
-  static constexpr double convertFromOther(double value) noexcept {
-    if constexpr (std::is_same_v<OtherDerived, RadianType>) {
-      return internal::RadToLaserNum(value);
-    } else if constexpr (std::is_same_v<OtherDerived, DegreeType>) {
-      return internal::DegToLaserNum(value);
-    } else {
-      static_assert(sizeof(OtherDerived) == 0,
-                    "Unsupported conversion to DegreeType.");
-    }
-  }
-};
 
 namespace internal {
 
@@ -204,6 +153,102 @@ class AngleBase {
 };
 
 }  // namespace internal
+
+class RadianType : public internal::AngleBase<RadianType> {
+ public:
+  using internal::AngleBase<RadianType>::AngleBase;
+  using internal::AngleBase<RadianType>::operator=;
+
+  // Templated conversion function
+  template <typename OtherDerived>
+  static constexpr double convertFromOther(double value) noexcept {
+    if constexpr (std::is_same_v<OtherDerived, DegreeType>) {
+      return internal::DegToRad(value);
+    } else if constexpr (std::is_same_v<OtherDerived, LaserNumType>) {
+      return internal::LaserNumToRad(value);
+    } else {
+      static_assert(sizeof(OtherDerived) == 0,
+                    "Unsupported conversion to RadianType.");
+    }
+  }
+};
+
+class DegreeType : public internal::AngleBase<DegreeType> {
+ public:
+  using internal::AngleBase<DegreeType>::AngleBase;
+  using internal::AngleBase<DegreeType>::operator=;
+
+  // Templated conversion function
+  template <typename OtherDerived>
+  static constexpr double convertFromOther(double value) noexcept {
+    if constexpr (std::is_same_v<OtherDerived, RadianType>) {
+      return internal::RadToDeg(value);
+    } else if constexpr (std::is_same_v<OtherDerived, LaserNumType>) {
+      return internal::LaserNumToDeg(value);
+    } else {
+      static_assert(sizeof(OtherDerived) == 0,
+                    "Unsupported conversion to DegreeType.");
+    }
+  }
+};
+
+class LaserNumType : public internal::AngleBase<LaserNumType> {
+ public:
+  using internal::AngleBase<LaserNumType>::AngleBase;
+  using internal::AngleBase<LaserNumType>::operator=;
+
+  // Templated conversion function
+  template <typename OtherDerived>
+  static constexpr double convertFromOther(double value) noexcept {
+    if constexpr (std::is_same_v<OtherDerived, RadianType>) {
+      return internal::RadToLaserNum(value);
+    } else if constexpr (std::is_same_v<OtherDerived, DegreeType>) {
+      return internal::DegToLaserNum(value);
+    } else {
+      static_assert(sizeof(OtherDerived) == 0,
+                    "Unsupported conversion to DegreeType.");
+    }
+  }
+};
+
+struct LaserPosType {
+  double num;  // laser number
+  double deg;  // degree value
+  double rad;  // radian value
+
+  // Constructor
+  constexpr LaserPosType() : num(0), deg(0), rad(0) {}
+
+  template <typename T,
+            typename = std::enable_if_t<std::is_same_v<T, RadianType> ||
+                                        std::is_same_v<T, DegreeType> ||
+                                        std::is_same_v<T, LaserNumType>>>
+  constexpr explicit LaserPosType(T value) {
+    if (std::is_same_v<T, RadianType>) {
+      num = internal::RadToLaserNum(value);
+      deg = internal::RadToDeg(value);
+      rad = value.value();
+    } else if (std::is_same_v<T, DegreeType>) {
+      num = internal::DegToLaserNum(value);
+      deg = value.value();
+      rad = internal::DegToRad(value);
+    } else if (std::is_same_v<T, LaserNumType>) {
+      num = value.value();
+      deg = internal::LaserNumToDeg(value);
+      rad = internal::LaserNumToRad(value);
+    } else {
+      static_assert(sizeof(T) == 0,
+                    "Unsupported type for LaserPosType. Use "
+                    "LaserPosType(RadianType) constructor instead.");
+    }
+  }
+
+  constexpr explicit LaserPosType(RadianType radian) {
+    num = internal::RadToLaserNum(radian.value());
+    deg = internal::RadToDeg(radian.value());
+    rad = radian.value();
+  }
+};
 
 }  // namespace roboto
 
