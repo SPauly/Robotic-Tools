@@ -12,8 +12,8 @@ set(ROOT_PATH ${CMAKE_SOURCE_DIR}/)
 # add the executable
 add_executable(roboto
   ${ROOT_PATH}/tools/roboto.cpp
-  ${ROOT_PATH}/tools/dist_of_laser.cpp
-  ${ROOT_PATH}/tools/laser_pos.cpp
+  ${ROOT_PATH}/tools/laser_dist/dist_of_laser.cpp
+  ${ROOT_PATH}/tools/laser_pos/laser_pos.cpp
 )
 
 target_include_directories(roboto PUBLIC

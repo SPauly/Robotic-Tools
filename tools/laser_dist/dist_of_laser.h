@@ -4,25 +4,25 @@
 #include <vector>
 
 #include "subroutine_base.h"
+#include "roboto/lidar_helpers.h"
 
 namespace roboto {
 
 class DistOfLaser : public SubroutineBase {
  public:
-  DistOfLaser(int argc, char** argv);
+  DistOfLaser(int argc, char** argv, bool use_time_dif_hack = false);
   virtual ~DistOfLaser() override = default;
 
   virtual void Run() override;
 
  protected:
-  const double CalcDistBetweenLasersCM(const double& dist_in_meters) const;
-
-  const double CalcDistToLaserM(const double& dist_in_cm) const;
+  void RunTimeDifference(char** argv);
 
  private:
   std::vector<double> distances_;
 
   bool inv = false;
+  bool use_time_dif_hack_ = false;
 };
 
 }  // namespace roboto

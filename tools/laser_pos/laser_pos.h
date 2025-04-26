@@ -5,7 +5,6 @@
 
 #include "subroutine_base.h"
 #include "roboto/lidar_helpers.h"
-#include "roboto/internal/config.h"
 
 namespace roboto {
 

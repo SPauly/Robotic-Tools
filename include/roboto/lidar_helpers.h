@@ -270,34 +270,28 @@ struct LaserPosType {
   // Constructor
   constexpr LaserPosType() : num(0), deg(0), rad(0) {}
 
-  template <typename T,
-            typename = std::enable_if_t<std::is_same_v<T, RadianType> ||
-                                        std::is_same_v<T, DegreeType> ||
-                                        std::is_same_v<T, LaserNumType>>>
-  constexpr explicit LaserPosType(T value) {
+  template <typename T>
+  constexpr explicit LaserPosType(T value)
+    requires(std::is_same_v<T, RadianType> || std::is_same_v<T, DegreeType> ||
+             std::is_same_v<T, LaserNumType>)
+  {
     if constexpr (std::is_same_v<T, RadianType>) {
-      num = internal::RadToLaserNum(value);
-      deg = internal::RadToDeg(value);
+      num = internal::RadToLaserNum(value.value());
+      deg = internal::RadToDeg(value.value());
       rad = value.value();
     } else if constexpr (std::is_same_v<T, DegreeType>) {
-      num = internal::DegToLaserNum(value);
+      num = internal::DegToLaserNum(value.value());
       deg = value.value();
-      rad = internal::DegToRad(value);
+      rad = internal::DegToRad(value.value());
     } else if constexpr (std::is_same_v<T, LaserNumType>) {
       num = value.value();
-      deg = internal::LaserNumToDeg(value);
-      rad = internal::LaserNumToRad(value);
+      deg = internal::LaserNumToDeg(value.value());
+      rad = internal::LaserNumToRad(value.value());
     } else {
       static_assert(sizeof(T) == 0,
                     "Unsupported type for LaserPosType. Use "
                     "LaserPosType(RadianType) constructor instead.");
     }
-  }
-
-  constexpr explicit LaserPosType(RadianType radian) {
-    num = internal::RadToLaserNum(radian.value());
-    deg = internal::RadToDeg(radian.value());
-    rad = radian.value();
   }
 };
 

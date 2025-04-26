@@ -1,9 +1,7 @@
-#include "laser_pos.h"
+#include "laser_pos/laser_pos.h"
 
 #include <iostream>
 #include <iomanip>
-
-#include "roboto/internal/conversions.h"
 
 namespace roboto {
 LaserPos::LaserPos(char** argv) : SubroutineBase() {
@@ -15,7 +13,7 @@ LaserPos::LaserPos(char** argv) : SubroutineBase() {
 
   if (std::string(argv[3]) == "num") {
     type_ = input_type::NUM;
-  } else if (std::string(argv[3]) == "pi") {
+  } else if (std::string(argv[3]) == "rad") {
     type_ = input_type::RAD;
   }
 }
@@ -54,32 +52,18 @@ LaserPosType LaserPos::FromNum() {
     return LaserPosType{};
   }
 
-  LaserPosType laser_pos;
-  laser_pos.num = static_cast<int>(value_);
-
-  // num -> deg: -135 + num * 0.5
-  laser_pos.deg = internal::LaserNumToDeg(value_);
-  // num -> rad: deg * (M_PI / (360.0 / 2))
-  laser_pos.rad = internal::DegToRad(laser_pos.deg);
-
+  LaserPosType laser_pos{LaserNumType(value_)};
   return laser_pos;
 }
 
 LaserPosType LaserPos::FromRad() {
-  LaserPosType laser_pos;
-  // rad -> deg: rad * (360.0 / 2) / M_PI
-  laser_pos.deg = internal::RadToDeg(value_);
+  LaserPosType laser_pos{LaserNumType(value_)};
 
   if (laser_pos.deg < internal::MIN_LAZER_DEG ||
       laser_pos.deg > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
     return LaserPosType{};
   }
-
-  // rad -> num: (deg - internal::MIN_LAZER_DEG) /
-  // internal::ANGLE_OF_LASER_DEGREE
-  laser_pos.num = internal::DegToLaserNum(laser_pos.deg);
-  laser_pos.rad = value_;
 
   return laser_pos;
 }
@@ -90,15 +74,7 @@ LaserPosType LaserPos::FromDeg() {
     return LaserPosType{};
   }
 
-  LaserPosType laser_pos;
-
-  // deg -> rad: deg * (M_PI / (360.0 / 2))
-  laser_pos.rad = internal::DegToRad(value_);
-
-  // deg -> num: (deg - internal::MIN_LAZER_DEG) /
-  // internal::ANGLE_OF_LASER_DEGREE
-  laser_pos.num = internal::DegToLaserNum(value_);
-  laser_pos.deg = value_;
+  LaserPosType laser_pos{LaserNumType(value_)};
   return laser_pos;
 }
 
