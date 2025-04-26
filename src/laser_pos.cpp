@@ -70,13 +70,13 @@ LaserPosType LaserPos::FromRad() {
   // rad -> deg: rad * (360.0 / 2) / M_PI
   laser_pos.deg = internal::RadToDeg(value_);
 
-  if (laser_pos.deg < internal::ZERO_LAZER_DEG ||
+  if (laser_pos.deg < internal::MIN_LAZER_DEG ||
       laser_pos.deg > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
     return LaserPosType{};
   }
 
-  // rad -> num: (deg - internal::ZERO_LAZER_DEG) /
+  // rad -> num: (deg - internal::MIN_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
   laser_pos.num = internal::DegToLaserNum(laser_pos.deg);
   laser_pos.rad = value_;
@@ -85,7 +85,7 @@ LaserPosType LaserPos::FromRad() {
 }
 
 LaserPosType LaserPos::FromDeg() {
-  if (value_ < internal::ZERO_LAZER_DEG || value_ > internal::MAX_LAZER_DEG) {
+  if (value_ < internal::MIN_LAZER_DEG || value_ > internal::MAX_LAZER_DEG) {
     std::cerr << "Error: The provided value is out of range." << std::endl;
     return LaserPosType{};
   }
@@ -95,7 +95,7 @@ LaserPosType LaserPos::FromDeg() {
   // deg -> rad: deg * (M_PI / (360.0 / 2))
   laser_pos.rad = internal::DegToRad(value_);
 
-  // deg -> num: (deg - internal::ZERO_LAZER_DEG) /
+  // deg -> num: (deg - internal::MIN_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
   laser_pos.num = internal::DegToLaserNum(value_);
   laser_pos.deg = value_;
