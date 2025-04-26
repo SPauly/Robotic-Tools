@@ -76,6 +76,12 @@ class LaserPosType;
 
 namespace internal {
 
+/// @brief Base class for angle types. It provides the basic functionality for
+/// calculations with angles and conversions between them. Conversion
+/// functionality must be provided in the derived classes via the
+/// convertFromOther function.
+/// @tparam Derived The derived type (RadianType, DegreeType, LaserNumType) ->
+/// this uses Curiously Recurring Template Pattern (CRTP)
 template <typename Derived>
 class AngleBase {
  protected:
@@ -106,6 +112,15 @@ class AngleBase {
             typename = std::enable_if_t<!std::is_same_v<Derived, OtherDerived>>>
   constexpr explicit AngleBase(const AngleBase<OtherDerived>& other) noexcept
       : value_(Derived::convertFromOther(other.value())) {}
+
+  // Function to be overloaded in derived classes for conversion
+  template <typename OtherDerived>
+  static constexpr double convertFromOther(double value) noexcept {
+    // This function should be specialized in the derived classes
+    static_assert(sizeof(Derived) == 0,
+                  "convertFromOther must be specialized in derived classes.");
+    return 0.0;
+  }
 
   // Math operators
   constexpr Derived operator+(const Derived& other) const noexcept {
@@ -154,12 +169,23 @@ class AngleBase {
 
 }  // namespace internal
 
+/// @brief Class representing an angle in radians. It provides conversion from
+/// DegreeType and LaserNumType. It also provides basic arithmetic operations.
+/// @details The class is derived from the AngleBase class, which provides basic
+/// arithmetic operations and comparison operators
 class RadianType : public internal::AngleBase<RadianType> {
  public:
   using internal::AngleBase<RadianType>::AngleBase;
   using internal::AngleBase<RadianType>::operator=;
 
   // Templated conversion function
+
+  /// @brief Converts from other angle types (DegreeType, LaserNumType) to
+  /// RadianType.
+  /// @tparam OtherDerived The type to convert from (DegreeType or
+  /// LaserNumType).
+  /// @param value Value to convert.
+  /// @return Value in radians.
   template <typename OtherDerived>
   static constexpr double convertFromOther(double value) noexcept {
     if constexpr (std::is_same_v<OtherDerived, DegreeType>) {
@@ -173,12 +199,22 @@ class RadianType : public internal::AngleBase<RadianType> {
   }
 };
 
+/// @brief Class representing an angle in degrees. It provides conversion from
+/// RadianType and LaserNumType. It also provides basic arithmetic operations.
+/// @details The class is derived from the AngleBase class, which provides basic
+/// arithmetic operations and comparison operators.
 class DegreeType : public internal::AngleBase<DegreeType> {
  public:
   using internal::AngleBase<DegreeType>::AngleBase;
   using internal::AngleBase<DegreeType>::operator=;
 
   // Templated conversion function
+
+  /// @brief Converts from other angle types (RadianType, LaserNumType) to
+  /// DegreeType.
+  /// @tparam OtherDerived RadianType or LaserNumType.
+  /// @param value value to convert.
+  /// @return converted value in degrees.
   template <typename OtherDerived>
   static constexpr double convertFromOther(double value) noexcept {
     if constexpr (std::is_same_v<OtherDerived, RadianType>) {
@@ -192,12 +228,22 @@ class DegreeType : public internal::AngleBase<DegreeType> {
   }
 };
 
+/// @brief Class representing a laser number. It provides conversion from
+/// RadianType and DegreeType. It also provides basic arithmetic operations.
+/// @details The class is derived from the AngleBase class, which provides basic
+/// arithmetic operations and comparison operators.
 class LaserNumType : public internal::AngleBase<LaserNumType> {
  public:
   using internal::AngleBase<LaserNumType>::AngleBase;
   using internal::AngleBase<LaserNumType>::operator=;
 
   // Templated conversion function
+
+  /// @brief Converts from other angle types (RadianType, DegreeType) to
+  /// LaserNumType.
+  /// @tparam OtherDerived RadianType or DegreeType.
+  /// @param value value to convert.
+  /// @return converted value in laser number.
   template <typename OtherDerived>
   static constexpr double convertFromOther(double value) noexcept {
     if constexpr (std::is_same_v<OtherDerived, RadianType>) {
@@ -211,6 +257,11 @@ class LaserNumType : public internal::AngleBase<LaserNumType> {
   }
 };
 
+/// @brief DTO representing the laser position. It contains the laser number,
+/// degree and radian values. It provides safe creation of the object using
+/// RadianType, DegreeType and LaserNumType. But will not check for out of range
+/// values nor ensure safe editing of the values. Ones they are changed after
+/// creation there is no guarantee that num, deg and rad are consistent.
 struct LaserPosType {
   double num;  // laser number
   double deg;  // degree value
@@ -224,15 +275,15 @@ struct LaserPosType {
                                         std::is_same_v<T, DegreeType> ||
                                         std::is_same_v<T, LaserNumType>>>
   constexpr explicit LaserPosType(T value) {
-    if (std::is_same_v<T, RadianType>) {
+    if constexpr (std::is_same_v<T, RadianType>) {
       num = internal::RadToLaserNum(value);
       deg = internal::RadToDeg(value);
       rad = value.value();
-    } else if (std::is_same_v<T, DegreeType>) {
+    } else if constexpr (std::is_same_v<T, DegreeType>) {
       num = internal::DegToLaserNum(value);
       deg = value.value();
       rad = internal::DegToRad(value);
-    } else if (std::is_same_v<T, LaserNumType>) {
+    } else if constexpr (std::is_same_v<T, LaserNumType>) {
       num = value.value();
       deg = internal::LaserNumToDeg(value);
       rad = internal::LaserNumToRad(value);
