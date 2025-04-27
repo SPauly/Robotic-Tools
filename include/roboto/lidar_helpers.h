@@ -110,9 +110,9 @@ class AngleBase {
   // same Type
   template <typename OtherDerived,
             typename = std::enable_if_t<!std::is_same_v<Derived, OtherDerived>>>
-  constexpr explicit AngleBase(const AngleBase<OtherDerived>& other) noexcept
-      : value_(Derived::convertFromOther(other.value())) {}
-
+  constexpr explicit AngleBase(const OtherDerived& other) noexcept
+      : value_(
+            Derived::template convertFromOther<OtherDerived>(other.value())) {}
   // Function to be overloaded in derived classes for conversion
   template <typename OtherDerived>
   static constexpr double convertFromOther(double value) noexcept {
@@ -178,6 +178,10 @@ class RadianType : public internal::AngleBase<RadianType> {
   using internal::AngleBase<RadianType>::AngleBase;
   using internal::AngleBase<RadianType>::operator=;
 
+  // Conversion constructors
+  RadianType(const DegreeType& deg) : internal::AngleBase<RadianType>(deg) {}
+  RadianType(const LaserNumType& num) : internal::AngleBase<RadianType>(num) {}
+
   // Templated conversion function
 
   /// @brief Converts from other angle types (DegreeType, LaserNumType) to
@@ -208,6 +212,10 @@ class DegreeType : public internal::AngleBase<DegreeType> {
   using internal::AngleBase<DegreeType>::AngleBase;
   using internal::AngleBase<DegreeType>::operator=;
 
+  // Conversion constructors
+  DegreeType(const RadianType& rad) : internal::AngleBase<DegreeType>(rad) {}
+  DegreeType(const LaserNumType& num) : internal::AngleBase<DegreeType>(num) {}
+
   // Templated conversion function
 
   /// @brief Converts from other angle types (RadianType, LaserNumType) to
@@ -236,6 +244,12 @@ class LaserNumType : public internal::AngleBase<LaserNumType> {
  public:
   using internal::AngleBase<LaserNumType>::AngleBase;
   using internal::AngleBase<LaserNumType>::operator=;
+
+  // Conversion constructors
+  LaserNumType(const RadianType& rad)
+      : internal::AngleBase<LaserNumType>(rad) {}
+  LaserNumType(const DegreeType& deg)
+      : internal::AngleBase<LaserNumType>(deg) {}
 
   // Templated conversion function
 

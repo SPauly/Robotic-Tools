@@ -43,7 +43,7 @@ inline constexpr double LaserNumToDeg(const double &num) {
 /// @return radian value (does not check for out of range)
 inline constexpr double LaserNumToRad(const double &num) {
   // num -> rad: look at LaserNumToDeg
-  return MIN_LAZER_RAD + num * ANGLE_OF_LASER_RADIAN;
+  return LaserNumToDeg(num) * DEG_TO_RAD;
 }
 
 /// @brief Converts Radian to laser number. Based on Laser configuration set in
@@ -53,7 +53,8 @@ inline constexpr double LaserNumToRad(const double &num) {
 inline constexpr int RadToLaserNum(const double &rad) {
   // rad -> num: (deg - internal::MIN_LAZER_DEG) /
   // internal::ANGLE_OF_LASER_DEGREE
-  return static_cast<int>(rad - MIN_LAZER_RAD) / ANGLE_OF_LASER_RADIAN;
+  return static_cast<int>(RadToDeg(rad) - MIN_LAZER_DEG) /
+         ANGLE_OF_LASER_DEGREE;
 }
 
 /// @brief Converts Degree to laser number. Based on Laser configuration set in
