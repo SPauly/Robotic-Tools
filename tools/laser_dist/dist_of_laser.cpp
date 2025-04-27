@@ -61,7 +61,7 @@ void DistOfLaser::Run() {
       std::cout << dist << "\t\t\t | " << DistBetweenLasersM(dist) << std::endl;
     }
   } else {
-    std::cout << "Distance Between lasers (cm) \t | Distance from laser (m)"
+    std::cout << "Distance Between lasers (m) \t | Distance from laser (m)"
               << std::endl;
 
     for (const auto &dist : distances_) {
