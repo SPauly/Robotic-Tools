@@ -4,6 +4,29 @@ Robotic-Tools is a collection of tools, examples and small projects developed an
 
 Disclaimer: This is not an official repository of the university, but merely a collection of things I deemed useful during the course. The tools are not guaranteed to be correct or complete, but I will try to keep them up to date and fix bugs.
 
+## ROS Basics Overview
+
+(A collection of notes regarding useful commands and concepts in ROS2 that I needed during the course)
+
+ROS2 Jazzy:
+
+- ```source /opt/ros/jazzy/setup.bash``` -> to set up the ros environment (This enables the use of ROS2 commands)
+- ```ros2 run <package> <executable>``` -> to run a specific executable from a package
+- ```ros2 topic list``` -> to list all active topics
+
+--------
+
+### ROS Concepts
+
+![ROS Graph](image.png)
+
+(Image taken from [ROS2 Tutorial](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html))
+
+--------
+
+**Nodes** &rarr; responsible for **single, modular tasks**
+-
+
 ## Lidar Helpers
 
 The `lidar_helpers.h` header provides a set of utility functions and strongly-typed classes for working with laser-based distance measurements and angle conversions in robotics applications. The library is designed to make calculations involving laser travel time, distances between laser beams, and conversions between different angle representations (radians, degrees, and laser numbers) type-safe and easy to use.
@@ -162,7 +185,7 @@ Inverse option:
 
 ```roboto distoflaser -i <arg1> <arg2> ...```
 
-- Calculates how far after the source the distance between the lasers is arg1...n 
+- Calculates how far after the source the distance between the lasers is arg1...n
 
 - example:
 
