@@ -57,7 +57,7 @@ LaserPosType LaserPos::FromNum() {
 }
 
 LaserPosType LaserPos::FromRad() {
-  LaserPosType laser_pos{LaserNumType(value_)};
+  LaserPosType laser_pos{RadianType(value_)};
 
   if (laser_pos.deg < internal::MIN_LAZER_DEG ||
       laser_pos.deg > internal::MAX_LAZER_DEG) {
@@ -74,7 +74,7 @@ LaserPosType LaserPos::FromDeg() {
     return LaserPosType{};
   }
 
-  LaserPosType laser_pos{LaserNumType(value_)};
+  LaserPosType laser_pos{DegreeType(value_)};
   return laser_pos;
 }
 
