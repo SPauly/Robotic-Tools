@@ -14,11 +14,19 @@ ROS2 Jazzy:
 - ```ros2 run <package> <executable>``` -> to run a specific executable from a package
 - ```ros2 topic list``` -> to list all active topics
 
+Setup for this repository:
+
+- ```source /opt/ros/jazzy/setup.bash``` -> to set up the ros environment to use ROS2 core as **underlay** (so ros2 finds standard packages)
+- ```colcon build --symlink-install``` -> to build my packages
+- **Change to a different terminal** and run:
+- ```source install/setup.bash``` -> to set up the ros environment to use my packages as **overlay** (so ros2 finds my packages)
+- ```ros2 run roboto <executable>``` -> to run a specific executable from my package
+
 --------
 
 ### ROS Concepts
 
-![ROS Graph](image.png)
+![ROS Graph](misc/image.png)
 
 (Image taken from [ROS2 Tutorial](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html))
 
