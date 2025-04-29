@@ -5,11 +5,38 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# C++ standard
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(roboto_core REQUIRED)
+find_package(GTest REQUIRED)
+
+set(ROBOTO_TESTS
+  lidar_helpers_test
+)
+
+# Erzeuge für jeden Test ein eigenes Target
+foreach(target ${ROBOTO_TESTS})
+  add_executable(${target} src/${target}.cpp)
+  target_include_directories(${target} PRIVATE 
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include>
+    )
+  target_link_libraries(${target} GTest::gtest_main)
+  
+  # Discover the tests
+  ament_add_gtest(${target} src/${target}.cpp)  
+  ament_target_dependencies(${target} roboto_core)
+
+  # Install
+  install(TARGETS ${target}
+    EXPORT export_${PROJECT_NAME}
+    DESTINATION lib/${PROJECT_NAME}
+  )
+endforeach()
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

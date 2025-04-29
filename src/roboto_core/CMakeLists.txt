@@ -8,20 +8,18 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
-# Build the static library
-add_library(${PROJECT_NAME} STATIC
-  src/lidar_helpers.cpp   # <-- list your .cpp files here
-)
+# Create an interface library for header-only targets
+add_library(${PROJECT_NAME} INTERFACE)
 
 # Include directory
 target_include_directories(${PROJECT_NAME}
-  PUBLIC
+INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
 # Set the C++ standard to C++20
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 # Export the include directories and libraries
 ament_export_include_directories(include)
