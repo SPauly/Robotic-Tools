@@ -24,6 +24,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 # Export the include directories and libraries
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 
 # Install everything
 install(
