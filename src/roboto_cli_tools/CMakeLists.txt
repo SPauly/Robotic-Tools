@@ -33,12 +33,11 @@ add_executable(roboto_cli_tools
 
 target_include_directories(roboto_cli_tools PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
   $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(roboto_cli_tools
-  roboto_core
-)
 
+ament_target_dependencies(roboto_cli_tools roboto_core)
 
 
 ament_package()

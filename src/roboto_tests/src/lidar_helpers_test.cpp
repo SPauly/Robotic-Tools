@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "roboto/lidar_helpers.h"
+#include "roboto_core/lidar_helpers.h"
 
 namespace roboto {
 namespace roboto_test {

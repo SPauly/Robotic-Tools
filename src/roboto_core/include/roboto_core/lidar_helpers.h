@@ -4,9 +4,9 @@
 #include <cmath>
 #include <type_traits>
 
-#include "roboto/internal/config.h"
-#include "roboto/internal/conversions.h"
-#include "roboto/internal/physics_constants.h"
+#include "roboto_core/internal/config.h"
+#include "roboto_core/internal/conversions.h"
+#include "roboto_core/internal/physics_constants.h"
 
 namespace roboto {
 // forward declaration

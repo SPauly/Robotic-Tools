@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <string>
 
-#include "roboto/internal/config.h"
+#include "roboto_core/internal/config.h"
 
 namespace roboto {
 DistOfLaser::DistOfLaser(int argc, char **argv, bool use_time_dif_hack)

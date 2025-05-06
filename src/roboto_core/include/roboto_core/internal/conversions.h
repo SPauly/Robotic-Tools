@@ -1,7 +1,7 @@
 #ifndef INTERNAL_CONVERSIONS_H
 #define INTERNAL_CONVERSIONS_H
 
-#include "roboto/internal/config.h"
+#include "roboto_core/internal/config.h"
 
 namespace roboto {
 namespace internal {

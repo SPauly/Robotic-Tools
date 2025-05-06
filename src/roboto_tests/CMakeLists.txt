@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_gtest REQUIRED)
 find_package(roboto_core REQUIRED)
 find_package(GTest REQUIRED)
 
@@ -20,7 +21,7 @@ set(ROBOTO_TESTS
 
 # Erzeuge für jeden Test ein eigenes Target
 foreach(target ${ROBOTO_TESTS})
-  add_executable(${target} src/${target}.cpp)
+  ament_add_gtest(${target} src/${target}.cpp)  
   target_include_directories(${target} PRIVATE 
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:include>
@@ -28,7 +29,6 @@ foreach(target ${ROBOTO_TESTS})
   target_link_libraries(${target} GTest::gtest_main)
   
   # Discover the tests
-  ament_add_gtest(${target} src/${target}.cpp)  
   ament_target_dependencies(${target} roboto_core)
 
   # Install

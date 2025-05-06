@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "subroutine_base.h"
-#include "roboto/lidar_helpers.h"
+#include "roboto_core/lidar_helpers.h"
 
 namespace roboto {
 

@@ -5,9 +5,7 @@
 #include "laser_dist/dist_of_laser.h"
 #include "laser_pos/laser_pos.h"
 #include "subroutine_base.h"
-#include "roboto/lidar_helpers.h"
-
-#include "roboto/lidar_helpers.h"
+#include "roboto_core/lidar_helpers.h"
 
 void ShowHelp(char** argv);
 
