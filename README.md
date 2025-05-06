@@ -24,6 +24,68 @@ Setup for this repository:
 
 --------
 
+## Installing Stage for ROS2
+
+Installation of stage_ros2 on Ubuntu 24.04:
+
+- Update the needed development packages and tools:
+  
+  - ```bash
+      sudo apt-get install git cmake g++ libjpeg8-dev libpng-dev libglu1-mesa-dev libltdl-dev libfltk1.3-dev #<- install FLTK of version 1.3 instead of 1.1
+    ```
+
+- Install stage as dependency for the stage_ros2 bridge: (only works manually on Ubuntu 24.04)
+  
+  - ```bash
+      cd ~ # alternatively install it as part of your workspace so cd <workspace>/src
+      git clone --branch ros2 https://github.com/tuw-robotics/stage.git
+      cd stage
+      mkdir build && cd build
+      cmake ..
+      make # <- this will take a while or use -j<number_of_cores> to speed it up (not recommended on wsl2)
+      sudo make install # <- will install the needed cmake files for us
+    ```
+
+- Make sure stage_ros2 finds the stage installation:
+
+  - ```bash
+      export CMAKE_PREFIX_PATH=/usr/local/lib/cmake:$CMAKE_PREFIX_PATH # <- this might be different on your system or not needed when installing in the same workspace
+    ```
+
+- Install stage_ros2:
+
+  - ```bash
+      cd ~ # alternatively install it as part of your workspace so cd <workspace>/src
+      git clone --branch humble git@github.com:tuw-robotics/stage_ros2.git
+      # Or even more controlled as submodule
+      cd <workspace>/src
+      git submodule add --branch humble git@github.com:tuw-robotics/stage_ros2.git stage_ros2
+      ```
+
+- Make sure the python ros development tools are installed:
+
+  - ```bash
+      cd ~ # alternatively install it as part of your workspace so cd <workspace>/src (whereever you decided to install the stage_ros2 package)
+      sudo apt install python3-rosdep
+      rosdep init
+      rosdep update
+      rosdep install --from-paths src --ignore-src -r -y # this installs all missing dependencies of your pkgs
+    ```
+  
+- Build the workspace:
+
+  - ```bash
+       colcon build --symlink-install --cmake-args -DOpenGL_GL_PREFERENCE=LEGACY
+       colcon build --symlink-install --packages-select stage_ros2
+    ```
+
+- Source Workspace and run the stage_ros2 example:
+
+  - ```bash
+      source install/setup.bash
+      ros2 launch stage_ros2 stage.launch.py world:=cave enforce_prefixes:=false one_tf_tree:=true
+    ```
+
 ### ROS Concepts
 
 ![ROS Graph](misc/image.png)
