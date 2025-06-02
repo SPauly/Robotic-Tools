@@ -1,62 +1,72 @@
+import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.substitutions import LaunchConfiguration, TextSubstitution
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time',  default='true')
-    this_directory = get_package_share_directory('stage_ros2')
+    # Get the directory of this package
+    this_directory = get_package_share_directory('point_follow')
 
-    namespace = LaunchConfiguration('namespace')
-    namespace_arg = DeclareLaunchArgument('namespace', default_value=TextSubstitution(text=''))
+    # Declare launch arguments
+    use_sim_time_arg = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use simulation time'
+    )
+    one_tf_tree_arg = DeclareLaunchArgument(
+        'one_tf_tree',
+        default_value='false',
+        description='on true all tfs are published with a namespace on /tf and /tf_static'
+    )
+    enforce_prefixes_arg = DeclareLaunchArgument(
+        'enforce_prefixes',
+        default_value='false',
+        description='on true a prefixes are used for a single robot environment'
+    )
+    use_static_transformations_arg = DeclareLaunchArgument(
+        'use_static_transformations',
+        default_value='true',
+        description='Use static transformations for sensor frames!'
+    )
+    stage_world_arg = DeclareLaunchArgument(
+        'world',
+        default_value=TextSubstitution(text='cave'),
+        description='World file relative to the project world file, without .world'
+    )
 
-    rviz_config = LaunchConfiguration('config')
-    rviz_config_arg = DeclareLaunchArgument(
-        'config',
-        default_value=TextSubstitution(text='empty'),
-        description='Use empty, cave or roblab to load a TUW enviroment')
-    
-    def rviz_launch_configuration(context):
+    def stage_world_configuration(context):
         file = os.path.join(
-            this_directory,
-            'config/rviz',
-            context.launch_configurations['config'] + '.rviz')
-        return [SetLaunchConfiguration('config', file)]
+            get_package_share_directory('stage_ros2'),
+            'world',
+            context.launch_configurations['world'] + '.world')
+        return [SetLaunchConfiguration('world_file', file)]
 
-    rviz_launch_configuration_arg = OpaqueFunction(function=rviz_launch_configuration)
-
-    return LaunchDescription([
-        namespace_arg,
-        rviz_config_arg,
-        rviz_launch_configuration_arg,
-        Node(
-            package='rviz2',
-            namespace=namespace,
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', [rviz_config]],
-            parameters=[{
-                "use_sim_time": use_sim_time}],
-        )
-    ])
+    stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
 
     return LaunchDescription([
-        # Declare use_sim_time parameter
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use simulation time'
-        ),
+        use_sim_time_arg,
+        one_tf_tree_arg,
+        enforce_prefixes_arg,
+        use_static_transformations_arg,
+        stage_world_arg,
+        stage_world_configuration_arg,
 
         # Start stage_ros2 node
         Node(
             package='stage_ros2',
             executable='stage_ros2',
-            name='stage_ros2',
+            name='stage',
             output='screen',
-            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
-            arguments=['$(find world)/cave_multi.world'],
-            remappings=[('base_scan', 'laserscan')]
+            parameters=[{
+                'one_tf_tree': LaunchConfiguration('one_tf_tree'),
+                'enforce_prefixes': LaunchConfiguration('enforce_prefixes'),
+                'use_static_transformations': LaunchConfiguration('use_static_transformations'),
+                "world_file": LaunchConfiguration('world_file'),
+                "gui": True
+            }],
         ),
 
         # Start RViz node
@@ -65,7 +75,9 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz',
             output='screen',
-            arguments=['-d$(find point_follow)/launch/point_follow_config.rviz']
+            arguments=[
+                '-d', os.path.join(this_directory, 'launch', 'point_follow_config.rviz')
+            ]
         ),
 
         # Start map_server node
@@ -74,7 +86,9 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            arguments=['$(find world)/cave_multi.world']
+            arguments=[
+                os.path.join(this_directory, 'world', 'cave_multi.world')
+            ]
         ),
 
         # Static transform publisher
