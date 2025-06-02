@@ -126,7 +126,15 @@ rosdep install --from-paths src --ignore-src -r -y  # this installs all missing 
 colcon build --symlink-install --cmake-args -DOpenGL_GL_PREFERENCE=LEGACY
 colcon build --symlink-install --packages-select stage_ros2        
 ```
-  
+
+- How to use it in other packages:
+
+  - For easy access add sourcing of the workspace setup to the bash
+
+    - ```bash
+        echo "source ~/YOUR_ROS2_WORKSPACE/install/setup.bash" >> ~/.bashrc
+        ```
+
 ### ROS Concepts
 
 ![ROS Graph](misc/image.png)
