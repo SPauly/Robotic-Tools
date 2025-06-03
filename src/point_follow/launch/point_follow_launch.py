@@ -107,9 +107,9 @@ def generate_launch_description():
             output='screen',
             parameters=[
                 {'use_sim_time': LaunchConfiguration('use_sim_time')},
-                {'initial_pose_x': -2.23},
-                {'initial_pose_y': -13.26},
-                {'initial_pose_a': 77.14},
+                {'initial_pose_x': -7.0},
+                {'initial_pose_y': -7.0},
+                {'initial_pose_a': 45.0},
                 {'odom_model_type': 'diff'},
                 {'odom_alpha1': 0.2},
                 {'odom_alpha2': 0.2},
