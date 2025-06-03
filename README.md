@@ -103,7 +103,7 @@ sudo apt-get install git cmake g++ libjpeg8-dev libpng-dev libglu1-mesa-dev libl
 cd YOUR_ROS2_WORKSPACE
 mkdir src 
 cd src
-git clone --branch ros2 git@github.com:tuw-robotics/stage.git
+git clone --branch ros2 https://github.com/tuw-robotics/Stage.git
 cd stage
 cmake -S . -B build
 cd build
@@ -113,7 +113,7 @@ export CMAKE_PREFIX_PATH=/usr/local/lib/cmake:$CMAKE_PREFIX_PATH # not needed wh
 
 # Install stage_ros2
 cd YOUR_ROS2_WORKSPACE/src
-git clone --branch humble git@github.com:tuw-robotics/stage_ros2.git 
+git clone --branch humble https://github.com/tuw-robotics/stage_ros2.git
 cd YOUR_ROS2_WORKSPACE
 
 # Update the needed development packages and tools
