@@ -10,7 +10,7 @@ class PointApproach : public rclcpp::Node {
  public:
   PointApproach() : Node("PointApproach") {
     laser_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-        "laserscan", 20,
+        "base_scan", 20,
         std::bind(&PointApproach::LaserCallback, this, std::placeholders::_1));
     amcl_subscriber_ = this->create_subscription<
         geometry_msgs::msg::PoseWithCovarianceStamped>(

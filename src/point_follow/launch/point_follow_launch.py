@@ -86,9 +86,9 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            arguments=[
-                os.path.join(this_directory, 'world', 'cave_multi.world')
-            ]
+            parameters=[{
+                'yaml_filename': os.path.join(this_directory, 'world', 'cave.yaml')
+            }],
         ),
 
         # Static transform publisher
@@ -138,7 +138,6 @@ def generate_launch_description():
                 {'recovery_alpha_slow': 0.0},
                 {'recovery_alpha_fast': 0.0}
             ],
-            remappings=[('scan', 'laserscan')]
         ),
 
         # Start custom node
