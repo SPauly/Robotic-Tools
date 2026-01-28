@@ -15,8 +15,8 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
   
   - ```bash
       cd YOUR_ROS2_WORKSPACE && mkdir src && cd src
-      git clone --branch ros2 https://github.com/tuw-robotics/stage.git
-      cd stage
+      git clone --branch ros2 https://github.com/tuw-robotics/Stage.git
+      cd Stage
       mkdir build && cd build
       cmake ..
       make # <- this will take a while
@@ -37,7 +37,7 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
 
   - ```bash
       cd YOUR_ROS2_WORKSPACE/src 
-      git clone --branch humble https://github.com/tuw-robotics/Stage.git
+      git clone https://github.com/tuw-robotics/stage_ros2.git
       cd YOUR_ROS2_WORKSPACE
     ```
 
@@ -55,7 +55,7 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
       sudo apt install python3-rosdep
       sudo rosdep init
       rosdep update
-      rosdep install --from-paths src --ignore-src -r -y
+      sudo rosdep install --from-paths src --ignore-src -r -y
     ```
   
 - Build the workspace:
@@ -101,7 +101,7 @@ cd YOUR_ROS2_WORKSPACE
 sudo apt install python3-rosdep
 sudo rosdep init
 rosdep update
-rosdep install --from-paths src --ignore-src -r -y 
+sudo rosdep install --from-paths src --ignore-src -r -y 
 
 # Build the workspace
 colcon build --symlink-install --cmake-args -DOpenGL_GL_PREFERENCE=LEGACY
