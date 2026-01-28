@@ -53,6 +53,8 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
   - ```bash
       sudo apt install ros-humble-desktop python3-colcon-common-extensions
     ```
+  
+  - skip this step if ROS 2 Humble is already installed on your system
 
 - Source the ROS 2 environment:
 
@@ -60,7 +62,7 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
       source /opt/ros/humble/setup.bash
     ```
   
-  - this step is required before running any colcon commands
+  - this step is required before running any colcon commands and needs to be repeated in each new terminal session
 
 - Make sure the python ros development tools are installed:
 
