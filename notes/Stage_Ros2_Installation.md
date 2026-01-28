@@ -48,6 +48,20 @@ Installation of stage_ros2 on Ubuntu 24.04: (not tested in all configurations)
     git submodule add --branch humble https://github.com/tuw-robotics/stage_ros2.git stage_ros2
     ```
 
+- Install ROS 2 desktop and colcon build tools:
+
+  - ```bash
+      sudo apt install ros-humble-desktop python3-colcon-common-extensions
+    ```
+
+- Source the ROS 2 environment:
+
+  - ```bash
+      source /opt/ros/humble/setup.bash
+    ```
+  
+  - This step is required before running any colcon commands
+
 - Make sure the python ros development tools are installed:
 
   - ```bash
@@ -96,6 +110,12 @@ export CMAKE_PREFIX_PATH=/usr/local/lib/cmake:$CMAKE_PREFIX_PATH # maybe not nee
 cd YOUR_ROS2_WORKSPACE/src
 git clone --branch humble https://github.com/tuw-robotics/stage_ros2.git
 cd YOUR_ROS2_WORKSPACE
+
+# Install ROS 2 desktop and colcon build tools
+sudo apt install ros-humble-desktop python3-colcon-common-extensions
+
+# Source ROS 2 environment
+source /opt/ros/humble/setup.bash
 
 # Update the needed development packages and tools
 sudo apt install python3-rosdep
